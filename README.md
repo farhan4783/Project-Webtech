@@ -346,4 +346,14 @@ MIT License - feel free to use this project for learning and inspiration.
 
 ---
 
+## 🔒 Security Notice
+
+> [!IMPORTANT]
+> **API Keys Required**: This project requires a Google Gemini API key to function. The `.env` files in this repository contain placeholder values only. You **MUST** add your own API keys before running the application.
+
+**Never commit your actual API keys to version control.** See [SECURITY.md](file:///c:/Users/FARAZ%20KHAN/Desktop/DEKSTOP/PROJECTS/WebDev/SECURITY.md) for detailed security guidelines.
+
+---
+
 **Built with ❤️ for the future of personal finance**
+```
