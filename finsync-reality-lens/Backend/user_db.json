@@ -1,0 +1,12 @@
+{
+  "user_id": "user_123",
+  "name": "Aryan",
+  "monthly_income": 85000,
+  "current_savings": 120000,
+  "monthly_expenses": {
+    "rent": 20000,
+    "food": 10000,
+    "existing_emis": 5000
+  },
+  "financial_goals": ["Buy Car", "Europe Trip"]
+}
