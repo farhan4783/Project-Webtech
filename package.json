@@ -1,0 +1,28 @@
+{
+  "name": "finsync-monorepo",
+  "version": "1.0.0",
+  "description": "Unified repository for FinSync AI projects",
+  "private": true,
+  "scripts": {
+    "install-all": "npm install && npm run install:backend && npm run install:frontend:landing && npm run install:frontend:dashboard && npm run install:frontend:ar",
+    "install:backend": "cd backend && npm install",
+    "install:frontend:landing": "cd 1rupee-main && npm install",
+    "install:frontend:dashboard": "cd finpal-main && npm install",
+    "install:frontend:ar": "cd finsync-reality-lens && npm install",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend:landing\" \"npm run start:frontend:dashboard\" \"npm run start:frontend:ar\"",
+    "start:backend": "cd backend && npm start",
+    "start:frontend:landing": "cd 1rupee-main && npm run dev",
+    "start:frontend:dashboard": "cd finpal-main && npm run dev",
+    "start:frontend:ar": "cd finsync-reality-lens && npm run dev",
+    "lint-all": "npm run lint:frontend:landing && npm run lint:frontend:ar",
+    "lint:frontend:landing": "cd 1rupee-main && npm run lint",
+    "lint:frontend:ar": "cd finsync-reality-lens && npm run lint",
+    "build-all": "npm run build:frontend:landing && npm run build:frontend:dashboard && npm run build:frontend:ar",
+    "build:frontend:landing": "cd 1rupee-main && npm run build",
+    "build:frontend:dashboard": "cd finpal-main && npm run build",
+    "build:frontend:ar": "cd finsync-reality-lens && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

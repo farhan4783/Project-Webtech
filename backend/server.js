@@ -1,13 +1,12 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/user.js';
 import chatRoutes from './routes/chat.js';
 
-// Load environment variables
-dotenv.config();
+// Initialize Express app
 
 // Initialize Express app
 const app = express();

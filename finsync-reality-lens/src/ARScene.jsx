@@ -9,7 +9,7 @@ const ARScene = ({ onScan, arData, isScanning }) => {
 
   useEffect(() => {
     const scene = sceneRef.current;
-    const handleTap = (evt) => {
+    const handleTap = () => {
       let spawnPos = { x: 0, y: 0, z: -2 };
       let spawnRot = { x: 0, y: 0, z: 0 };
 

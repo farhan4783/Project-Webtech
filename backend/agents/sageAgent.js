@@ -1,18 +1,24 @@
 import { GoogleGenAI } from '@google/genai';
 
-const genAI = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-});
-
-/**
- * The Sage Agent - Empathetic Financial Coach
- * Specializes in behavioral finance, goal tracking, and spending habits
- */
 class SageAgent {
     constructor() {
-        this.model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-        });
+        try {
+            if (process.env.GEMINI_API_KEY) {
+                const genAI = new GoogleGenAI({
+                    apiKey: process.env.GEMINI_API_KEY,
+                });
+                this.model = genAI.getGenerativeModel({
+                    model: 'gemini-1.5-flash',
+                });
+            } else {
+                console.warn('⚠️ GEMINI_API_KEY missing. Sage Agent will not function correctly.');
+                this.model = null;
+            }
+        } catch (error) {
+            console.error('Error initializing Gemini:', error);
+            this.model = null;
+        }
+
         this.personality = `You are "The Sage" - a wise, empathetic financial behavioral coach.
 Your role:
 - Help users make emotionally intelligent financial decisions
@@ -26,6 +32,13 @@ Tone: Warm, understanding, but firm when needed. Like a caring mentor.`;
     }
 
     async reply(userMessage, userContext = {}) {
+        if (!this.model) {
+            return {
+                success: false,
+                message: 'Sage Agent is offline (Missing API Key)',
+                agent: 'sage',
+            };
+        }
         try {
             // Build context from user's financial profile and goals
             let contextInfo = '';
@@ -93,6 +106,13 @@ Be conversational and empathetic, not preachy.`;
     }
 
     async analyzeSpendingDecision(itemName, itemPrice, userContext = {}) {
+        if (!this.model) {
+            return {
+                success: false,
+                message: 'Sage Agent is offline (Missing API Key)',
+                agent: 'sage',
+            };
+        }
         try {
             const disposableIncome = userContext.disposableIncome || 0;
             const hourlyWage = userContext.hourlyWage || 0;

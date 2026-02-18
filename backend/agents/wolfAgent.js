@@ -1,19 +1,25 @@
 import { GoogleGenAI } from '@google/genai';
 import yahooFinance from 'yahoo-finance2';
 
-const genAI = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-});
-
-/**
- * The Wolf Agent - Aggressive Investment Analyst
- * Specializes in stock analysis, market data, and buy/sell recommendations
- */
 class WolfAgent {
     constructor() {
-        this.model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-        });
+        try {
+            if (process.env.GEMINI_API_KEY) {
+                const genAI = new GoogleGenAI({
+                    apiKey: process.env.GEMINI_API_KEY,
+                });
+                this.model = genAI.getGenerativeModel({
+                    model: 'gemini-1.5-flash',
+                });
+            } else {
+                console.warn('⚠️ GEMINI_API_KEY missing. Wolf Agent will not function correctly.');
+                this.model = null;
+            }
+        } catch (error) {
+            console.error('Error initializing Gemini:', error);
+            this.model = null;
+        }
+
         this.personality = `You are "The Wolf" - a sharp, data-driven investment analyst.
 Your role:
 - Analyze stocks using real market data
@@ -55,6 +61,12 @@ Tone: Professional, analytical, slightly aggressive`;
     }
 
     async compareStocks(stock1Symbol, stock2Symbol) {
+        if (!this.model) {
+            return {
+                success: false,
+                message: 'Wolf Agent is offline (Missing API Key)',
+            };
+        }
         try {
             const [stock1Data, stock2Data] = await Promise.all([
                 this.analyzeStock(stock1Symbol),
@@ -114,6 +126,13 @@ Provide a detailed comparison and recommendation in markdown format. Include:
     }
 
     async reply(userMessage, userContext = {}) {
+        if (!this.model) {
+            return {
+                success: false,
+                message: 'Wolf Agent is offline (Missing API Key)',
+                agent: 'wolf',
+            };
+        }
         try {
             const contextInfo = userContext.monthlyIncome
                 ? `\n\nUser Context:\n- Monthly Income: ₹${userContext.monthlyIncome}\n- Current Savings: ₹${userContext.currentSavings}\n- Risk Tolerance: ${userContext.riskTolerance || 'medium'}`

@@ -2,7 +2,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Helper function to get auth token
-const getToken = () => {
+// Helper function to get auth token
+export const getToken = () => {
     return localStorage.getItem('finsync_token');
 };
 

@@ -2,22 +2,30 @@ import { GoogleGenAI } from '@google/genai';
 import wolfAgent from './wolfAgent.js';
 import sageAgent from './sageAgent.js';
 
-const genAI = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-});
-
-/**
- * The Sniper Agent - Intelligent Coordinator
- * Routes user queries to the appropriate specialist agent
- */
 class SniperAgent {
     constructor() {
-        this.model = genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
-        });
+        try {
+            if (process.env.GEMINI_API_KEY) {
+                const genAI = new GoogleGenAI({
+                    apiKey: process.env.GEMINI_API_KEY,
+                });
+                this.model = genAI.getGenerativeModel({
+                    model: 'gemini-1.5-flash',
+                });
+            } else {
+                console.warn('⚠️ GEMINI_API_KEY missing. Sniper Agent will not function correctly.');
+                this.model = null;
+            }
+        } catch (error) {
+            console.error('Error initializing Gemini:', error);
+            this.model = null;
+        }
     }
 
     async analyzeIntent(userMessage) {
+        if (!this.model) {
+            return 'sage'; // Default fallback if offline
+        }
         try {
             const prompt = `You are an intent classifier for a financial AI system.
 Analyze the user's message and determine which agent should handle it:
