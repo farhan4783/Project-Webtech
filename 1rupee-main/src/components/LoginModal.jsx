@@ -40,9 +40,13 @@ function LoginModal({ isOpen, onClose }) {
         try {
             const response = await authAPI.login({ email, password })
 
-            if (response.success) {
-                // Redirect to dashboard
-                window.location.href = 'http://localhost:5174'
+            if (response.success && response.data.token) {
+                // Redirect to dashboard with token
+                const params = new URLSearchParams({
+                    token: response.data.token,
+                    user: JSON.stringify(response.data.user)
+                });
+                window.location.href = `http://localhost:3001?${params.toString()}`;
             }
         } catch (err) {
             setError(err.message || 'Login failed. Please check your credentials.')

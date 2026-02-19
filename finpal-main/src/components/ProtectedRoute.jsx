@@ -3,7 +3,9 @@ import { isAuthenticated } from '../utils/auth';
 
 export default function ProtectedRoute({ children }) {
   if (!isAuthenticated()) {
-    return <Navigate to="/login" replace />;
+    // Redirect to landing page login
+    window.location.href = 'http://localhost:3000';
+    return null;
   }
   return children;
 }

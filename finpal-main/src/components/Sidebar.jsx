@@ -27,17 +27,35 @@ export default function Sidebar() {
         </div>
       </div>
       <nav className="sidebar-nav">
-        {menuItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
-          >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
-            <span className="nav-label-mobile">{item.shortLabel}</span>
-          </Link>
-        ))}
+        {menuItems.map((item) => {
+          const externalLinks = {
+            '/reality-lens': 'http://localhost:3002',
+            '/agent-chat': 'http://localhost:3003'
+          };
+          const externalLink = externalLinks[item.path];
+
+          return externalLink ? (
+            <a
+              key={item.path}
+              href={externalLink}
+              className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
+              <span className="nav-label-mobile">{item.shortLabel}</span>
+            </a>
+          ) : (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
+              <span className="nav-label-mobile">{item.shortLabel}</span>
+            </Link>
+          );
+        })}
       </nav>
       <div className="sidebar-footer">
         <button onClick={handleLogout} className="logout-button">
